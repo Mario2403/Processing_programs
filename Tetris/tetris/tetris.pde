@@ -1,18 +1,30 @@
-
+import processing.sound.*;
 int grid=30;
+
+SoundFile mainOST;
 
 ArrayList<Piece> pieces= new ArrayList();
 
 void setup() {
 
   size(300, 600);
+  mainOST = new SoundFile(this, "OST.mp3");
+  mainOST.loop();
   frameRate(5);
 }
 
 void draw() {
+
   background(0);
 
   boolean actual=false;
+  for (Piece p : pieces) {
+    for (Portion portion : p.portions) {
+      if (portion.y==0) {
+        noLoop();
+      }
+    }
+  }
 
   for (Piece p : pieces) {
     if (p.active) actual=true;
@@ -41,7 +53,7 @@ void draw() {
 }
 
 void checkLines() {
-  
+
   for (int i=1; i<10; i++) {
     int cont=0;
     for (Piece p : pieces) {
@@ -51,7 +63,6 @@ void checkLines() {
     }
     if (cont==10) deleteLine(i);
   }
-  
 }
 
 void deleteLine(int line) {
@@ -68,8 +79,8 @@ void deleteLine(int line) {
 void fallAll(int line) {
   for (Piece p : pieces) {
     for (Portion portion : p.portions) {
-      if(portion.y<=height-(line*30))
-      portion.y+=30;
+      if (portion.y<=height-(line*30))
+        portion.y+=30;
     }
   }
 }
